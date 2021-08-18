@@ -29,11 +29,12 @@ func main() {
 
 	// concurrency flag
 	var concurrency int
-	flag.IntVar(&concurrency, "c", 20, "set the concurrency level")
+	flag.IntVar(&concurrency, "c", 20, "")
 
 	// javascript flag
 	var userJS string
-	flag.StringVar(&userJS, "js", "", "the JS to run on each page")
+	flag.StringVar(&userJS, "js", "", "")
+	flag.StringVar(&userJS, "javascript", "", "")
 
 	flag.Parse()
 
@@ -76,4 +77,15 @@ func main() {
 
 	close(urls)
 	wg.Wait()
+}
+
+func init() {
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Fuzz for parameter pollution\n\n")
+		fmt.Fprintf(os.Stderr, "Usage:\n")
+		fmt.Fprintf(os.Stderr, "cat urls | jsfuzz [options]\n\n")
+		fmt.Fprintf(os.Stderr, "Options:\n")
+		fmt.Fprintf(os.Stderr, "  -c <int>        			set the concurrency level (default 20)\n")
+		fmt.Fprintf(os.Stderr, "  -js, --javascript <str>		the JS to run on each page\n")
+	}
 }
