@@ -1,0 +1,29 @@
+# fuzzjs
+A fast tool to scan client-side prototype pollution vulnerability written in go.
+
+## Install
+With Go:
+```
+> go get -u github.com/pawanprjl/jsfuzz
+```
+
+## Usage
+Basic usage:
+```
+> cat urls
+https://httpbin.org?__proto__[footle]=bootle
+https://example.com?__proto__[footle]=bootle
+https://tomnomnom.com?__proto__[footle]=bootle
+https://prototype-pollution.tomnomnom.repl.co?__proto__[footle]=bootle
+https://example.net?__proto__[footle]=bootle
+
+> cat urls | jsfuzz -js 'window.footle' -c 5
+[ERRO] https://tomnomnom.uk?__proto__[footle]=bootle
+[ERRO] https://example.com?__proto__[footle]=bootle
+[ERRO] https://example.net?__proto__[footle]=bootle
+[VULN] https://prototype-pollution.tomnomnom.repl.co?__proto__[footle]=bootle
+[ERRO] https://httpbin.org?__proto__[footle]=bootle
+```
+
+## Attribution
+This tool was inspired from @tomnomnom's videos. 
